@@ -37,7 +37,14 @@ class Blogpost(models.Model):
             'title' : self.title,
             'intro' : self.intro,
             'content' : self.content,
-            'created': self.created,
-            'updated':self.updated,
+            'created': self.created.strftime('%Y.%m.%d. %H:%M'),
+            'updated': self.created.strftime('%Y.%m.%d. %H:%M'),
             'tags' : tags
         }
+
+    def tag_list(self):
+        mytags = self.tags.all()
+        tags = []
+        for tag in mytags:
+            tags.append(tag.id)
+        return tags

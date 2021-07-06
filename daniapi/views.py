@@ -8,6 +8,7 @@ def endpoints(request):
         'api/post/[id]/ + GET':'Return one specific post',
         'api/tags/ + GET':'Return all tag type',
         'api/tag/[id]/ + GET':'Return one specific tag',
+        'api/postbytag/[tagid]/ + GET':'Return all post with the tag[id]',
     }
 
     return JsonResponse(commands)
@@ -41,3 +42,14 @@ def getalltags(request):
 def gettag(request, id):
     post = Tag.objects.get(id=id)
     return JsonResponse(post.serialize())
+
+def postbytag(request, id):
+    datas = {'data':[]}
+    posts = Blogpost.objects.all()
+
+    for post in posts:
+        taglist = post.tag_list()
+        print(taglist)
+        if int(id) in taglist:
+            datas['data'].append(post.serialize())
+    return JsonResponse(datas)
